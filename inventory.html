@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý tồn ngày</title>
+</head>
+<body>
+    <h1>Quản lý tồn ngày</h1>
+    {% if message %}
+        <p><strong>{{ message }}</strong></p>
+    {% endif %}
+
+    <h2>Tồn ngày</h2>
+    <ul>
+        {% for item, qty in inventory.items() %}
+            <li>
+                {{ item }}: {{ qty }} phần
+                <form action="{{ url_for('adjust_quantity') }}" method="post" style="display:inline;">
+                    <input type="hidden" name="name" value="{{ item }}">
+                    <input type="hidden" name="adjustment" value="1">
+                    <button type="submit">Tăng</button>
+                </form>
+                <form action="{{ url_for('adjust_quantity') }}" method="post" style="display:inline;">
+                    <input type="hidden" name="name" value="{{ item }}">
+                    <input type="hidden" name="adjustment" value="-1">
+                    <button type="submit">Giảm</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Thêm mặt hàng</h2>
+    <form action="{{ url_for('add_item') }}" method="post">
+        Tên mặt hàng: <input type="text" name="name" required>
+        Số lượng: <input type="number" name="quantity" required>
+        <button type="submit">Thêm</button>
+    </form>
+
+    <h2>Xóa mặt hàng</h2>
+    <form action="{{ url_for('remove_item') }}" method="post">
+        Tên mặt hàng: <input type="text" name="name" required>
+        <button type="submit">Xóa</button>
+    </form>
+</body>
+</html>
